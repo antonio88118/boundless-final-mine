@@ -49,9 +49,8 @@ export default function Test() {
   let produceTestImage = `/instrument/上低音號/Jupiter_jbr700/jbr700_1.jpg`
 
   // ----------------------會員登入狀態  ----------------------
-  
 
-  //------獲取單一使用者全部訂單 
+  //------獲取單一使用者全部訂單
   const appKey = 'userToken'
   const [userOrderData, setuserOrderData] = useState([])
   const getLoginUserOrder = async (e) => {
@@ -82,11 +81,10 @@ export default function Test() {
       // console.log('Response from server:', LoginUserData)
       // setUserData(LoginUserData)
       // console.log(LoginUserProfile)
-      
+
       // console.log(orderDatas.data)
       setuserOrderData(orderDatas.data)
-      
-      
+
       // 在這裡處理後端返回的資料
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error)
@@ -99,24 +97,20 @@ export default function Test() {
     if (LoginUserData) {
       getLoginUserOrder()
     }
-  }, []) 
+  }, [])
   let OrderData = []
   let i = 0
   let y = 0
-  
+
   useEffect(() => {
     // 檢查獲得訂單
     // console.log(userOrderData.productResult[0][0])
-    if(userOrderData.productResult){
+    if (userOrderData.productResult) {
       OrderData = userOrderData
       // console.log(OrderData.productResult[0][0])
     }
-    
-  }, [userOrderData]) 
+  }, [userOrderData])
 
-
-  
-  
   // ----------------------手機版本  ----------------------
   // 主選單
   const [showMenu, setShowMenu] = useState(false)
@@ -208,7 +202,7 @@ export default function Test() {
           }`}
         >
           {/* 用戶資訊 */}
-          <NavbarMb/>
+          <NavbarMb />
         </div>
         <div className="row">
           {/* sidebar */}
@@ -228,7 +222,9 @@ export default function Test() {
                   <div className="sidebar-user-info-name">
                     {LoginUserData.nickname}
                   </div>
-                  <div className="sidebar-user-info-band">{LoginUserData.my_jamname}</div>
+                  <div className="sidebar-user-info-band">
+                    {LoginUserData.my_jamname}
+                  </div>
                 </div>
                 {/* 更換大頭貼的功能暫定併回會員資訊 故不再sidebar顯示 */}
                 {/* <div className="sidebar-user-info-Camera-img">
@@ -248,7 +244,15 @@ export default function Test() {
                   <Link href="/user/user-info">會員資訊</Link>
                 </li>
                 <li key={2}>
-                  <Link href={LoginUserData.jamstate == '1' ?  `/jam/recruit-list/${LoginUserData.my_jam}`: `/user/user-jam`}>我的樂團</Link>
+                  <Link
+                    href={
+                      LoginUserData.jamstate == '1'
+                        ? `/jam/recruit-list/${LoginUserData.my_jam}`
+                        : `/user/user-jam`
+                    }
+                  >
+                    我的樂團
+                  </Link>
                 </li>
                 <li key={3}>
                   <Link href="/user/user-order">我的訂單</Link>
@@ -269,20 +273,28 @@ export default function Test() {
             <div
               className={`sidebar-mb d-sm-none ${
                 showSidebar ? 'sidebar-mb-show' : ''
-              }`} style={{top:'190px'}}
+              }`}
+              style={{ top: '190px' }}
             >
               <div className="sm-close">
                 <IoClose
                   size={32}
                   onClick={() => {
                     setShowSidebar(false)
-                  }} 
+                  }}
                 />
               </div>
               <Link href={`/user/user-info`} className="sm-item ">
                 會員資訊
               </Link>
-              <Link href={LoginUserData.jamstate == '1' ?  `/jam/recruit-list/${LoginUserData.my_jam}`: `/user/user-jam`} className="sm-item ">
+              <Link
+                href={
+                  LoginUserData.jamstate == '1'
+                    ? `/jam/recruit-list/${LoginUserData.my_jam}`
+                    : `/user/user-jam`
+                }
+                className="sm-item "
+              >
                 我的樂團
               </Link>
               <Link href={`/user/user-order`} className="sm-item active">
@@ -518,17 +530,15 @@ export default function Test() {
                         <div className="user-title-userInfo">我的訂單</div>
                       </div>
                       <div className="user-orderList">
-
-
                         {/* <div className="user-order-item-instrument ">
                           <div className="user-order-item-instrument-leftSide col-lg-3 col-12">
                             <div className="user-order-item-instrument-leftSide-img">
                               <Image src={produceTestImage} alt='' priority style={{ borderRadius: 10, padding:5 }} width={150} height={150}></Image>
                             </div> */}
-                            {/* <div className="user-order-item-instrument-leftSide-btn btn btn-primary">
+                        {/* <div className="user-order-item-instrument-leftSide-btn btn btn-primary">
                               退貨
                             </div> */}
-                          {/* </div>
+                        {/* </div>
                           <div className="user-order-item-instrument-detail col-lg-9 col-12">
                             <div className="user-order-item-instrument-detail-row ">
                               <div className="user-order-item-instrument-detail-row-col-productName">
@@ -567,8 +577,6 @@ export default function Test() {
                             </div>
                           </div>
                         </div> */}
-
-
 
                         {/* {OrderData.productResult ? 
                         <div className="user-order-item-instrument ">
@@ -667,62 +675,103 @@ export default function Test() {
                           </div>
                         ))} */}
 
-
-                        {userOrderData.productResult && userOrderData.productResult.map((productList, index) => (
-                          <div key={index}>
-                          
-                            {productList.map((product, innerIndex) => (
-                              <div className="user-order-item-instrument" key={innerIndex}>
-                                <div className="user-order-item-instrument-leftSide col-lg-3 col-12" style={{paddingTop:25}}>
-                                  <div className="user-order-item-instrument-leftSide-img " >
-                                  
-                                    <Image src={`/smallForOrder/${product.img_small}`} alt={product.name} priority style={{ borderRadius: 10, padding:5 ,height: '100%' , width:"100%", objectFit:'contain'}} width={150} height={150}  ></Image>
-                                  </div>
-                                </div>
-                                <div className="user-order-item-instrument-detail col-lg-9 col-12" style={{paddingTop:15}}>
-                                  <div className="user-order-item-instrument-detail-row">
-                                    <div className="user-order-item-instrument-detail-row-col-productName">
-                                      <p>
-                                        <span>商品名稱：</span> {product.name} {product.quantity !== 1 ? ` * ${product.quantity}` : ''}
-                                      </p>
+                        {userOrderData.productResult &&
+                          userOrderData.productResult.map(
+                            (productList, index) => (
+                              <div key={index}>
+                                {productList.map((product, innerIndex) => (
+                                  <div
+                                    className="user-order-item-instrument py-3"
+                                    key={innerIndex}
+                                  >
+                                    <div className="user-order-item-instrument-leftSide col-lg-3 col-12">
+                                      <div className="user-order-item-instrument-leftSide-img ">
+                                        <Image
+                                          src={`/smallForOrder/${product.img_small}`}
+                                          alt={product.name}
+                                          priority
+                                          style={{
+                                            borderRadius: 10,
+                                            padding: 5,
+                                            height: '100%',
+                                            width: '100%',
+                                            objectFit: 'contain',
+                                          }}
+                                          width={150}
+                                          height={150}
+                                        ></Image>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className="user-order-item-instrument-detail col-lg-9 col-12"
+                                    >
+                                      <div className="user-order-item-instrument-detail-row">
+                                        <div className="user-order-item-instrument-detail-row-col-productName">
+                                          <p>
+                                            <span>商品名稱：</span>{' '}
+                                            {product.name}{' '}
+                                            {product.quantity !== 1
+                                              ? ` * ${product.quantity}`
+                                              : ''}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <div className="user-order-item-instrument-detail-row row ms-0">
+                                        <div className="user-order-item-instrument-detail-row-col col-lg-3 col-5">
+                                          <h5>訂單編號</h5>
+                                          <p>
+                                            {product.order_id + 31700023464729}
+                                          </p>
+                                        </div>
+                                        <div className="user-order-item-instrument-detail-row-col col-lg-3 col-5">
+                                          <h5>購買日期</h5>
+                                          <p>
+                                            {product.onshelf_time.split('T')[0]}
+                                          </p>
+                                        </div>
+                                        <div className="user-order-item-instrument-detail-row-col col-lg-3 col-12">
+                                          <h5>付款金額</h5>
+                                          <p>
+                                            ${product.price * product.quantity}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      {product.type == '1' ? (
+                                        <div className="user-order-item-instrument-detail-row row ms-0">
+                                          <div className="user-order-item-instrument-detail-row-col col-lg-3 col-5">
+                                            <h5>
+                                              {product.type == '1'
+                                                ? '商品狀態'
+                                                : ''}
+                                            </h5>
+                                            <p>
+                                              {product.type == '1'
+                                                ? product.transportation_state
+                                                : ''}
+                                            </p>
+                                          </div>
+                                          <div className="user-order-item-instrument-detail-row-col-address col-lg-4 col-5">
+                                            <h5>
+                                              {product.type == '1'
+                                                ? '配送地址'
+                                                : ''}
+                                            </h5>
+                                            <p>
+                                              {product.type == '1'
+                                                ? `${product.postcode}${product.country}${product.township}${product.address}`
+                                                : ''}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        ''
+                                      )}
                                     </div>
                                   </div>
-                                  <div className="user-order-item-instrument-detail-row row">
-                                    <div className="user-order-item-instrument-detail-row-col col-lg-3 col-5">
-                                      <h5>訂單編號</h5>
-                                      <p>{product.order_id + 31700023464729}</p>
-                                    </div>
-                                    <div className="user-order-item-instrument-detail-row-col col-lg-3 col-5">
-                                      <h5>購買日期</h5>
-                                      <p>{product.onshelf_time.split("T")[0]}</p>
-                                    </div>
-                                    <div className="user-order-item-instrument-detail-row-col col-lg-3 col-12">
-                                      <h5>付款金額</h5>
-                                      <p>${product.price * product.quantity}</p>
-                                    </div>
-                                  </div>
-                                  <div className="user-order-item-instrument-detail-row row">
-                                    <div className="user-order-item-instrument-detail-row-col col-lg-3 col-5">
-                                      <h5>付款方式</h5>
-                                      <p>信用卡</p>
-                                    </div>
-                                    <div className="user-order-item-instrument-detail-row-col col-lg-3 col-5">
-                                      <h5>{product.type == '1' ? '商品狀態': ''}</h5>
-                                      <p>{product.type == '1' ? product.transportation_state : ""}</p>
-                                    </div>
-                                    <div className="user-order-item-instrument-detail-row-col-address col-lg-4 col-5">
-                                      <h5>{product.type == '1' ? '配送地址': ''}</h5>
-                                      <p>{product.type == '1' ? `${product.postcode}${product.country}${product.township}${product.address}` : ''}</p>
-                                    </div>
-                                    
-                                  </div>
-                                  
-                                </div>
+                                ))}
                               </div>
-                            ))}
-                          </div>
-                          
-                        ))}
+                            )
+                          )}
 
                         {/* <div className="user-order-item-lesson">
                           <div className="user-order-item-lesson-leftSide">
@@ -763,7 +812,6 @@ export default function Test() {
                             </div>
                           </div>
                         </div> */}
-
                       </div>
 
                       {/* <div className="user-orderList-pagination">
@@ -898,7 +946,6 @@ export default function Test() {
               flex-direction: column;
             }
 
-
             .user-order-item-instrument-leftSide {
               /* padding-left: 25px; */
               display: flex;
@@ -949,10 +996,8 @@ export default function Test() {
                   padding: 0px 20px 5px 0px;
                   font-size: 20px;
                   @media screen and (max-width: 576px) {
-                    margin-Left:30px
+                    margin-left: 30px;
                   }
-
-                  
 
                   & span {
                     font-family: 'Noto Sans TC';
@@ -964,7 +1009,6 @@ export default function Test() {
                 }
 
                 .user-order-item-instrument-detail-row-col {
-                  
                   display: flex;
                   padding: 0px 20px 5px 0px;
                   align-items: center;
@@ -974,17 +1018,15 @@ export default function Test() {
                   overflow: hidden;
                   text-overflow: ellipsis;
                   @media screen and (max-width: 576px) {
-                    margin-Left:30px
+                    margin-left: 30px;
                   }
-                  
                 }
 
-                
                 .user-order-item-instrument-detail-row-col-address {
                   /*width: 800px;*/
                   padding: 0px 20px 5px 0px;
                   @media screen and (max-width: 576px) {
-                    margin-Left:30px
+                    margin-left: 30px;
                   }
                   & h5 {
                     font-family: 'Noto Sans TC';
@@ -993,7 +1035,6 @@ export default function Test() {
                     font-weight: 400;
                     line-height: normal;
                     color: var(--primary-deep, #124365);
-                    
                   }
                 }
               }

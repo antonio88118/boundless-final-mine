@@ -38,7 +38,6 @@ export default function InstrumentList({
                   className={`${Instrument.instrument_item_pic_div}`}
                   src={`/instrument/${categoryName[i]}/small/${v.img_small}`}
                   alt={v.name}
-                  sizes="100vw"
                   priority={false}
                   fill
                 />

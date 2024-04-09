@@ -287,7 +287,7 @@ export default function Test() {
                 />
               </svg>
             </Link>
-            <div className="login-logoText">音樂無國界，學習無邊界</div>
+            <div className="login-logoText" style={{userSelect:'none'}}>音樂無國界，學習無邊界</div>
             <div className="login-form">
               <div className="login-titleText">登入</div>
               {/* <button className="btn btn-primary" onClick={getUser}>
@@ -647,8 +647,7 @@ export default function Test() {
         /* ------------------------bg-------------------- */
         .bg-login {
           display: flex;
-          /* width: 1920px; */
-          max-width: 1920px;
+          width: 100%;
           height: calc(100vh - 45px);
           position: relative;
           justify-content: center;

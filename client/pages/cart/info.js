@@ -28,6 +28,8 @@ import { userAgent } from 'next/server'
 export default function Test() {
   //hook
   const {
+    instrumentData,
+    lessonData,
     calcInstrumentItems,
     calcInstrumentPrice,
     calcInstrumentDiscount,
@@ -127,7 +129,7 @@ export default function Test() {
           <div className="cart">
             <h2>購物車</h2>
           </div>
-          <div className="d-flex justify-content-between cart-process">
+          <div className="d-flex justify-content-between align-items-start cart-process align-items-start">
             <div
               className="d-flex align-items-center ballbox"
               style={{ gap: 10 }}
@@ -144,7 +146,9 @@ export default function Test() {
               <div className="ball d-flex align-items-center justify-content-center active">
                 2
               </div>
-              <div className="h5 cart-process-text">填寫訂單資料</div>
+              <div className="h5 cart-process-text">
+                填寫收件資料（無樂器免填）
+              </div>
             </div>
             <div
               className="d-flex align-items-center ballbox"
@@ -153,306 +157,104 @@ export default function Test() {
               <div className="ball d-flex align-items-center justify-content-center inactive">
                 3
               </div>
-              <div className="h5 cart-process-text">結帳確認</div>
+              <div className="h5 cart-process-text">訂單確認</div>
             </div>
           </div>
           <div className="d-flex">
             <div className="w-100 p-0 cart-main">
-              <div className="consumer-info">
-                <div className="cart-title">寄送資訊</div>
-                <div className="consumer-info-group">
-                  <div className="row g-3 align-items-center">
-                    <label
-                      htmlFor="name"
-                      className="col-form-label col-sm-2 h6"
-                    >
-                      購買者姓名
-                    </label>
-                    <div className="col-sm-3 col-6 consumer-info-input">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        value={UserInfoData[0].Name}
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="row g-3 align-items-center">
-                    <label
-                      htmlFor="phone"
-                      className="col-form-label col-sm-2 h6"
-                    >
-                      電話號碼
-                    </label>
-                    <div className="col-sm-3 col-6 consumer-info-input">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="phone"
-                        value={UserInfoData[0].Phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="row g-3 align-items-center">
-                    <label
-                      htmlFor="email"
-                      className="col-form-label col-sm-2 h6"
-                    >
-                      電子信箱
-                    </label>
-                    <div className="col-sm-5 col-10 consumer-info-input">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="email"
-                        value={UserInfoData[0].Email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="row g-3">
-                    <label
-                      htmlFor="address"
-                      className="col-form-label col-sm-2 h6"
-                    >
-                      寄送地址
-                    </label>
-                    <div className="address-location col-sm-10">
-                      <Twzipcode
-                        initPostcode={data.postcode}
-                        onPostcodeChange={(country, township, postcode) => {
-                          setData({
-                            country,
-                            township,
-                            postcode,
-                          })
-                        }}
-                      />
-
-                      <div className="col-sm-7 col-7">
-                        <label htmlFor="addressinfo" className="form-label">
-                          詳細地址
-                        </label>
+              {instrumentData && instrumentData.length > 0 ? (
+                <div className="consumer-info">
+                  <div className="cart-title">寄送資訊</div>
+                  <div className="consumer-info-group">
+                    <div className="row g-3 align-items-center">
+                      <label
+                        htmlFor="name"
+                        className="col-form-label col-sm-2 h6"
+                      >
+                        收件人姓名
+                      </label>
+                      <div className="col-sm-3 col-6 consumer-info-input">
                         <input
                           type="text"
                           className="form-control"
-                          id="addressinfo"
-                          value={UserInfoData[0].Address}
-                          onChange={(e) => setAddress(e.target.value)}
+                          id="name"
+                          value={UserInfoData[0].Name}
+                          onChange={(e) => setName(e.target.value)}
                         />
                       </div>
                     </div>
+                    <div className="row g-3 align-items-center">
+                      <label
+                        htmlFor="phone"
+                        className="col-form-label col-sm-2 h6"
+                      >
+                        電話號碼
+                      </label>
+                      <div className="col-sm-3 col-6 consumer-info-input">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="phone"
+                          value={UserInfoData[0].Phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="row g-3 align-items-center">
+                      <label
+                        htmlFor="email"
+                        className="col-form-label col-sm-2 h6"
+                      >
+                        電子信箱
+                      </label>
+                      <div className="col-sm-5 col-10 consumer-info-input">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="email"
+                          value={UserInfoData[0].Email}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="row g-3">
+                      <label
+                        htmlFor="address"
+                        className="col-form-label col-sm-2 h6"
+                      >
+                        寄送地址
+                      </label>
+                      <div className="address-location col-sm-10">
+                        <Twzipcode
+                          initPostcode={data.postcode}
+                          onPostcodeChange={(country, township, postcode) => {
+                            setData({
+                              country,
+                              township,
+                              postcode,
+                            })
+                          }}
+                        />
+
+                        <div className="col-sm-7 col-7">
+                          <label htmlFor="addressinfo" className="form-label">
+                            詳細地址
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="addressinfo"
+                            value={UserInfoData[0].Address}
+                            onChange={(e) => setAddress(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="cart-instrument credit-card-info">
-                <div className="cart-title">付款資訊</div>
-                <div className="payment-info-group">
-                  <div className="paymethods">
-                    <div className="paymethod-item">
-                      <input
-                        type="radio"
-                        id="transfer"
-                        value={'transfer'}
-                        name="paymethods"
-                        onChange={() => {
-                          setSeleted('transfer')
-                        }}
-                        checked={selected === 'transfer' ? true : false}
-                      />
-                      <label htmlFor="transfer">轉帳匯款</label>
-                    </div>
-
-                    <div className="paymethod-item">
-                      <input
-                        type="radio"
-                        id="credit-card"
-                        value={'credit-card'}
-                        name="paymethods"
-                        onChange={() => {
-                          setSeleted('credit-card')
-                        }}
-                        checked={selected === 'credit-card' ? true : false}
-                      />
-                      <label htmlFor="credit-card">信用卡</label>
-                      <div className="credit-card-pic">
-                        <div className="credit-card-pic-item mastercard">
-                          <Image src="/cart/mastercard.svg" fill />
-                        </div>
-                        <div className="credit-card-pic-item mnp">
-                          <Image src="/cart/mnp.svg" fill />
-                        </div>
-                        <div className="credit-card-pic-item visa">
-                          <Image src="/cart/visa.svg" fill />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="paymethod-item">
-                      <input
-                        type="radio"
-                        id="mobliepayment"
-                        value={'mobliepayment'}
-                        name="paymethods"
-                        onChange={() => {
-                          setSeleted('mobliepayment')
-                        }}
-                        checked={selected == 'mobliepayment' ? true : false}
-                      />
-                      <label htmlFor="mobliepayment">Line Pay</label>
-                      <div className="credit-card-pic">
-                        <div className="mobilepayment-pic-item">
-                          <Image src="/cart/linepay.svg" fill />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <hr />
-                  </div>
-                  {selected === 'credit-card' ? (
-                    <>
-                      <div className="row g-3 align-items-center">
-                        <label
-                          htmlFor="name"
-                          className="col-form-label col-sm-2 col-3 h6"
-                        >
-                          持卡人姓名
-                        </label>
-                        <div className="col-sm-6 col-7">
-                          <input
-                            type="text"
-                            className="form-control credit-card-input"
-                            id="name"
-                            placeholder="Ex:HSIANG-AN, YANG"
-                          />
-                        </div>
-                      </div>
-                      <div className="row g-3 align-items-center">
-                        <label
-                          htmlFor="credit-card-number"
-                          className="col-form-label col-sm-2 col-3 h6"
-                        >
-                          信用卡卡號
-                        </label>
-                        <div className="creditcard" style={{ width: '5rem' }}>
-                          <input
-                            type="text"
-                            className="form-control credit-card-input"
-                            id="credit-card-number"
-                            maxLength={4}
-                            style={{ textAlign: 'center' }}
-                          />
-                        </div>
-                        <div className="w-auto minussign">
-                          <FiMinus />
-                        </div>
-                        <div className="creditcard" style={{ width: '5rem' }}>
-                          <input
-                            type="text"
-                            className="form-control credit-card-input"
-                            id="credit-card-number"
-                            maxLength={4}
-                            style={{ textAlign: 'center' }}
-                          />
-                        </div>
-                        <div className="w-auto minussign">
-                          <FiMinus />
-                        </div>
-                        <div className="creditcard " style={{ width: '5rem' }}>
-                          <input
-                            type="text"
-                            className="form-control credit-card-input"
-                            id="credit-card-number"
-                            maxLength={4}
-                            style={{ textAlign: 'center' }}
-                          />
-                        </div>
-                        <div className="w-auto minussign">
-                          <FiMinus />
-                        </div>
-                        <div className="creditcard" style={{ width: '5rem' }}>
-                          <input
-                            type="text"
-                            className="form-control credit-card-input"
-                            id="credit-card-number"
-                            maxLength={4}
-                            style={{ textAlign: 'center' }}
-                          />
-                        </div>
-                      </div>
-                      <div className="row g-3 align-items-center">
-                        <label
-                          htmlFor="email"
-                          className="col-form-label col-sm-2 col-3 h6"
-                        >
-                          有效期限
-                        </label>
-                        <div className="creditcard" style={{ width: '5rem' }}>
-                          <input
-                            type="text"
-                            className="form-control credit-card-input"
-                            id="expiration-date"
-                            placeholder="MM"
-                            maxLength={2}
-                            min={1}
-                            max={12}
-                            style={{ textAlign: 'center' }}
-                          />
-                        </div>
-                        <div className="w-auto minussign">
-                          <FiMinus />
-                        </div>
-                        <div className="creditcard" style={{ width: '5rem' }}>
-                          <input
-                            type="text"
-                            className="form-control credit-card-input"
-                            id="expiration-date"
-                            placeholder="YY"
-                            maxLength={2}
-                            style={{ textAlign: 'center' }}
-                          />
-                        </div>
-                      </div>
-                      <div className="row g-3 align-items-center">
-                        <label
-                          htmlFor="3-number"
-                          className="col-form-label col-sm-2 col-3 h6"
-                        >
-                          背面末三碼
-                        </label>
-                        <div className="creditcard" style={{ width: '5rem' }}>
-                          <input
-                            type="text"
-                            className="form-control credit-card-input"
-                            style={{ textAlign: 'center' }}
-                            id="3-number"
-                            maxLength={3}
-                          />
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    ''
-                  )}
-                  {selected === 'mobliepayment' ? (
-                    <>
-                      <div id="type3">
-                        <h1>TYPE 4</h1>
-                        <div class="btn-9">CLICK</div>
-
-                        <div class="btn-10">CLICK</div>
-
-                        <div class="btn-11">CLICK</div>
-                      </div>
-                    </>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </div>
+              ) : (
+                ''
+              )}
             </div>
             <div
               className="position-sticky top-0 flowcart"
@@ -466,7 +268,16 @@ export default function Test() {
                   <div className="d-flex justify-content-between carttext">
                     <div>商品數量</div>
                     <div>
-                      樂器*{calcInstrumentItems()} 課程*{calcLessonItems()}
+                      {instrumentData && instrumentData.length > 0 ? (
+                        <>樂器*{calcInstrumentItems()}</>
+                      ) : (
+                        ''
+                      )}
+                      {lessonData && lessonData.length > 0 ? (
+                        <>課程*{calcLessonItems()}</>
+                      ) : (
+                        ''
+                      )}
                     </div>
                   </div>
                   <div className="d-flex justify-content-between carttext">
@@ -479,7 +290,12 @@ export default function Test() {
                   </div>
                   <div className="d-flex justify-content-between h3">
                     <div>合計</div>
-                    <div>NT ${(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}</div>
+                    <div>
+                      NT $
+                      {(
+                        calcTotalPrice() - calcTotalDiscount()
+                      ).toLocaleString()}
+                    </div>
                   </div>
                 </div>
                 <div className="cart-btn">
@@ -495,7 +311,7 @@ export default function Test() {
                     className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
                     style={{ padding: '14px 0' }}
                   >
-                    確認付款
+                    確認訂單
                   </Link>
                 </div>
               </div>
@@ -512,7 +328,16 @@ export default function Test() {
             <div className="d-flex justify-content-between carttext">
               <div>商品數量</div>
               <div>
-                樂器*{calcInstrumentItems()} 課程*{calcLessonItems()}
+                {instrumentData && instrumentData.length > 0 ? (
+                  <>樂器*{calcInstrumentItems()}</>
+                ) : (
+                  ''
+                )}
+                {lessonData && lessonData.length > 0 ? (
+                  <>課程*{calcLessonItems()}</>
+                ) : (
+                  ''
+                )}
               </div>{' '}
             </div>
             <div className="d-flex justify-content-between carttext">
@@ -525,7 +350,9 @@ export default function Test() {
             </div>
             <div className="d-flex justify-content-between h3">
               <div>合計</div>
-              <div>NT ${(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}</div>
+              <div>
+                NT ${(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}
+              </div>
             </div>
           </div>
           <div className="cart-btn">
@@ -541,7 +368,7 @@ export default function Test() {
               className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
               style={{ padding: '14px 0' }}
             >
-              確認付款
+              確認訂單
             </Link>
           </div>
         </div>

@@ -81,7 +81,6 @@ export default function Test() {
   ])
 
   localStorage.setItem('UserInfo', UserInfo)
-
   return (
     <>
       <Head>
@@ -101,7 +100,7 @@ export default function Test() {
           <div className="cart">
             <h2>購物車</h2>
           </div>
-          <div className="d-flex justify-content-between cart-process">
+          <div className="d-flex justify-content-between align-items-start cart-process">
             <div
               className="d-flex align-items-center ballbox step1"
               style={{ gap: 10 }}
@@ -118,7 +117,9 @@ export default function Test() {
               <div className="ball d-flex align-items-center justify-content-center inactive">
                 2
               </div>
-              <div className="h5 cart-process-text">填寫訂單資料</div>
+              <div className="h5 cart-process-text">
+                填寫收件資料（無樂器免填）
+              </div>
             </div>
             <div
               className="d-flex align-items-center ballbox step3"
@@ -127,88 +128,103 @@ export default function Test() {
               <div className="ball d-flex align-items-center justify-content-center inactive">
                 3
               </div>
-              <div className="h5 cart-process-text">結帳確認</div>
+              <div className="h5 cart-process-text">訂單確認</div>
             </div>
           </div>
-          <div className="d-flex">
+          <div className="d-flex" style={{ minHeight: '42svh' }}>
             <div className="w-100 p-0 cart-main">
-              <div className="cart-lesson">
-                <div className="cart-title">課程</div>
-                <div className="cart-thead">
-                  <div className="lesson-product">商品</div>
-                  <div className="lesson-price">售價</div>
-                </div>
-                <LessonList
-                  items={items}
-                  lessonData={lessonData}
-                  remove={remove}
-                />
-                <div className="cart-subtotal h6">
-                  原價 NT$ {calcLessonPrice().toLocaleString()}
-                </div>
-                <div className="cart-coupon">
-                  <div className="coupon-selector">
-                    <div className="cart-coupon-text">優惠券</div>
-                    <div>
-                      <LessonCouponList
-                        lessonCoupons={lessonCoupons}
-                        handleLessonSelector={handleLessonSelector}
-                        handleLessonCUIDSelector={handleLessonCUIDSelector}
-                      />
+              {lessonData && lessonData.length > 0 ? (
+                <div className="cart-lesson">
+                  <div className="cart-title">課程</div>
+                  <div className="cart-thead">
+                    <div className="lesson-product">商品</div>
+                    <div className="lesson-price">售價</div>
+                  </div>
+                  <LessonList
+                    items={items}
+                    lessonData={lessonData}
+                    remove={remove}
+                  />
+                  <div className="cart-subtotal h6">
+                    原價 NT$ {calcLessonPrice().toLocaleString()}
+                  </div>
+                  <div className="cart-coupon">
+                    <div className="coupon-selector">
+                      <div className="cart-coupon-text">優惠券</div>
+                      <div>
+                        <LessonCouponList
+                          lessonCoupons={lessonCoupons}
+                          handleLessonSelector={handleLessonSelector}
+                          handleLessonCUIDSelector={handleLessonCUIDSelector}
+                        />
+                      </div>
+                    </div>
+                    <div className="cart-discount h6">
+                      折扣 -NT$
+                      {calcLessonDiscount().toLocaleString()}
                     </div>
                   </div>
-                  <div className="cart-discount h6">
-                    折扣 -NT$
-                    {calcLessonDiscount().toLocaleString()}
-                  </div>
-                </div>
-                <div className="cart-total">
-                  <div className="cart-total-text">
-                    小計 NT$ {(calcLessonPrice() - calcLessonDiscount()).toLocaleString()}
-                  </div>
-                </div>
-              </div>
-              <div className="cart-instrument">
-                <div className="cart-title">樂器</div>
-                <div className="cart-thead">
-                  <div className="instrument-product">商品</div>
-                  <div className="instrument-price">單價</div>
-                  <div className="instrument-quantity">數量</div>
-                  <div className="instrument-total">總價</div>
-                </div>
-                <InstrumentList
-                  items={items}
-                  instrumentData={instrumentData}
-                  increment_cart={increment_cart}
-                  decrement_cart={decrement_cart}
-                  remove={remove}
-                />
-                <div className="cart-subtotal h6">
-                  原價 NT$ {calcInstrumentPrice().toLocaleString()}
-                </div>
-                <div className="cart-coupon">
-                  <div className="coupon-selector">
-                    <div className="cart-coupon-text">優惠券</div>
-                    <div>
-                      <InstrumentCouponList
-                        instrumentCoupons={instrumentCoupons}
-                        handleInstrumentSelector={handleInstrumentSelector}
-                        handleInstrumentCUIDSelector={
-                          handleInstrumentCUIDSelector
-                        }
-                      />
+                  <div className="cart-total">
+                    <div className="cart-total-text">
+                      小計 NT${' '}
+                      {(
+                        calcLessonPrice() - calcLessonDiscount()
+                      ).toLocaleString()}
                     </div>
                   </div>
-                  <div className="cart-discount h6">
-                    折扣 -NT$ {calcInstrumentDiscount().toLocaleString()}
+                </div>
+              ) : (
+                ''
+              )}
+
+              {instrumentData && instrumentData.length > 0 ? (
+                <div className="cart-instrument">
+                  <div className="cart-title">樂器</div>
+                  <div className="cart-thead">
+                    <div className="instrument-product">商品</div>
+                    <div className="instrument-price">單價</div>
+                    <div className="instrument-quantity">數量</div>
+                    <div className="instrument-total">總價</div>
+                  </div>
+                  <InstrumentList
+                    items={items}
+                    instrumentData={instrumentData}
+                    increment_cart={increment_cart}
+                    decrement_cart={decrement_cart}
+                    remove={remove}
+                  />
+                  <div className="cart-subtotal h6">
+                    原價 NT$ {calcInstrumentPrice().toLocaleString()}
+                  </div>
+                  <div className="cart-coupon">
+                    <div className="coupon-selector">
+                      <div className="cart-coupon-text">優惠券</div>
+                      <div>
+                        <InstrumentCouponList
+                          instrumentCoupons={instrumentCoupons}
+                          handleInstrumentSelector={handleInstrumentSelector}
+                          handleInstrumentCUIDSelector={
+                            handleInstrumentCUIDSelector
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="cart-discount h6">
+                      折扣 -NT$ {calcInstrumentDiscount().toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="cart-total">
+                    <div className="cart-total-text">
+                      小計 NT${' '}
+                      {(
+                        calcInstrumentPrice() - calcInstrumentDiscount()
+                      ).toLocaleString()}
+                    </div>
                   </div>
                 </div>
-                <div className="cart-total">
-                  <div className="cart-total-text">
-                    小計 NT$ {(calcInstrumentPrice() - calcInstrumentDiscount()).toLocaleString()}
-                  </div>
-                </div>
-              </div>
+              ) : (
+                ''
+              )}
             </div>
             <div
               className="flowcart position-sticky top-0"
@@ -222,7 +238,16 @@ export default function Test() {
                   <div className="d-flex justify-content-between carttext">
                     <div>商品數量</div>
                     <div>
-                      樂器*{calcInstrumentItems()} 課程*{calcLessonItems()}
+                      {instrumentData && instrumentData.length > 0 ? (
+                        <>樂器*{calcInstrumentItems()}</>
+                      ) : (
+                        ''
+                      )}
+                      {lessonData && lessonData.length > 0 ? (
+                        <>課程*{calcLessonItems()}</>
+                      ) : (
+                        ''
+                      )}
                     </div>
                   </div>
                   <div className="d-flex justify-content-between carttext">
@@ -235,17 +260,36 @@ export default function Test() {
                   </div>
                   <div className="d-flex justify-content-between h3">
                     <div>合計</div>
-                    <div>NT ${(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}</div>
+                    <div>
+                      NT $
+                      {(
+                        calcTotalPrice() - calcTotalDiscount()
+                      ).toLocaleString()}
+                    </div>
                   </div>
                 </div>
                 <div className="cart-btn">
-                  <Link
-                    href="/cart/info"
-                    className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
-                    style={{ padding: '14px 0' }}
-                  >
-                    結帳
-                  </Link>
+                  {items.length > 0 ? (
+                    <Link
+                      href={
+                        instrumentData && instrumentData.length > 0
+                          ? '/cart/info'
+                          : '/cart/confirm'
+                      }
+                      className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
+                      style={{ padding: '14px 0' }}
+                    >
+                      結帳
+                    </Link>
+                  ) : (
+                    <Link
+                      href="../lesson"
+                      className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
+                      style={{ padding: '14px 0' }}
+                    >
+                      返回購物
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -261,7 +305,18 @@ export default function Test() {
             <div className="d-flex justify-content-between carttext">
               <div>商品數量</div>
               <div>
-                樂器*{calcInstrumentItems()} 課程*{calcLessonItems()}
+                <div>
+                  {instrumentData && instrumentData.length > 0 ? (
+                    <>樂器*{calcInstrumentItems()}</>
+                  ) : (
+                    ''
+                  )}
+                  {lessonData && lessonData.length > 0 ? (
+                    <>課程*{calcLessonItems()}</>
+                  ) : (
+                    ''
+                  )}
+                </div>
               </div>
             </div>
             <div className="d-flex justify-content-between carttext">
@@ -274,17 +329,33 @@ export default function Test() {
             </div>
             <div className="d-flex justify-content-between h3">
               <div>合計</div>
-              <div>NT ${(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}</div>
+              <div>
+                NT ${(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}
+              </div>
             </div>
           </div>
           <div className="cart-btn">
-            <Link
-              href="/cart/info"
-              className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
-              style={{ padding: '14px 0' }}
-            >
-              結帳
-            </Link>
+            {items.length > 0 ? (
+              <Link
+                href={
+                  instrumentData && instrumentData.length > 0
+                    ? '/cart/info'
+                    : '/cart/confirm'
+                }
+                className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
+                style={{ padding: '14px 0' }}
+              >
+                結帳
+              </Link>
+            ) : (
+              <Link
+                href="../lesson"
+                className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
+                style={{ padding: '14px 0' }}
+              >
+                返回購物
+              </Link>
+            )}
           </div>
         </div>
       </div>

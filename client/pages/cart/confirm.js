@@ -4,19 +4,7 @@ import NavbarMb from '@/components/common/navbar-mb'
 import Footer from '@/components/common/footer'
 import Head from 'next/head'
 import Link from 'next/link'
-import Image from 'next/image'
-import jamHero from '@/assets/jam-hero.png'
-// icons
-import { IoHome } from 'react-icons/io5'
-import { FaChevronRight } from 'react-icons/fa6'
-import { IoIosSearch } from 'react-icons/io'
-import { FaFilter } from 'react-icons/fa6'
-import { FaSortAmountDown } from 'react-icons/fa'
-import { ImExit } from 'react-icons/im'
-import { IoClose } from 'react-icons/io5'
-import { FaPlus } from 'react-icons/fa'
-import { FaMinus } from 'react-icons/fa'
-import { FaTrash } from 'react-icons/fa6'
+import { useRouter } from 'next/router'
 
 //hook
 import { useCart } from '@/hooks/use-cart'
@@ -32,6 +20,7 @@ import InstrumentConfirmList from '@/components/cart/confirm-instrument-items.js
 import { TRUE } from 'sass'
 
 export default function Test() {
+  const router = useRouter()
   let UserInfo = JSON.parse(localStorage.getItem('UserInfo'))
   //hook
   const {
@@ -124,7 +113,7 @@ export default function Test() {
   const postcode = localStorage.getItem('Postcode')
   const totaldiscount = calcTotalDiscount()
   const payment = calcTotalPrice()
-  const transportationstate = '運送中'
+  const transportationstate = '等待出貨'
   const cartData = localStorage.getItem('CartData')
   const LessonCUID = localStorage.getItem('LessonCouponCUID')
   const InstrumentCUID = localStorage.getItem('InstrumentCouponCUID')
@@ -168,15 +157,23 @@ export default function Test() {
       body: formData,
       credentials: 'include',
     })
+    const result = await res.json()
+    // 前往綠界付款頁面
+    if (result.status == 'success') {
+      router.push(`http://localhost:3005/api/cart/${result.ouid}`)
+    }
   }
 
   return (
     <>
       <Head>
-        <title>結帳確認</title>
+        <title>訂單確認</title>
       </Head>
       <Navbar menuMbToggle={menuMbToggle} />
-      <div className="container position-relative">
+      <div
+        className="container position-relative"
+        style={{ minHeight: '64svh' }}
+      >
         {/* 手機版主選單/navbar */}
         <div
           className={`menu-mb d-sm-none d-flex flex-column align-items-center ${
@@ -185,51 +182,57 @@ export default function Test() {
         >
           <NavbarMb />
         </div>
-        <>
-          <div className="cart">
-            <h2>購物車</h2>
+        <div className="cart">
+          <h2>購物車</h2>
+        </div>
+        <div className="d-flex justify-content-between align-items-start cart-process">
+          <div
+            className="d-flex align-items-center ballbox"
+            style={{ gap: 10 }}
+          >
+            <div className="ball d-flex align-items-center justify-content-center inactive">
+              1
+            </div>
+            <div className="h5 cart-process-text">修改訂單</div>
           </div>
-          <div className="d-flex justify-content-between cart-process">
-            <div
-              className="d-flex align-items-center ballbox"
-              style={{ gap: 10 }}
-            >
-              <div className="ball d-flex align-items-center justify-content-center inactive">
-                1
-              </div>
-              <div className="h5 cart-process-text">修改訂單</div>
+          <div
+            className="d-flex align-items-center ballbox"
+            style={{ gap: 10 }}
+          >
+            <div className="ball d-flex align-items-center justify-content-center inactive">
+              2
             </div>
-            <div
-              className="d-flex align-items-center ballbox"
-              style={{ gap: 10 }}
-            >
-              <div className="ball d-flex align-items-center justify-content-center inactive">
-                2
-              </div>
-              <div className="h5 cart-process-text">填寫訂單資料</div>
-            </div>
-            <div
-              className="d-flex align-items-center ballbox"
-              style={{ gap: 10 }}
-            >
-              <div className="ball d-flex align-items-center justify-content-center active">
-                3
-              </div>
-              <div className="h5 cart-process-text">結帳確認</div>
+            <div className="h5 cart-process-text">
+              填寫收件資料（無樂器免填）
             </div>
           </div>
-          <div className="d-flex">
-            <div className="w-100 p-0 cart-main">
-              <div className="cart-lesson">
-                <div className="cart-title">訂單內容</div>
+          <div
+            className="d-flex align-items-center ballbox"
+            style={{ gap: 10 }}
+          >
+            <div className="ball d-flex align-items-center justify-content-center active">
+              3
+            </div>
+            <div className="h5 cart-process-text">訂單確認</div>
+          </div>
+        </div>
+        <div className="d-flex">
+          <div className="w-100 p-0 cart-main">
+            <div className="cart-lesson">
+              <div className="cart-title">訂單內容</div>
+              {lessonData && lessonData.length > 0 ? (
                 <div className="cart-thead">
                   <div className="lesson-product">課程</div>
                   <div className="lesson-price">價格</div>
                   <div className="lesson-payment">實付金額</div>
                 </div>
-                <div className="cart-item-group">
-                  <LessonConfirmList lessonData={lessonData} />
-                </div>
+              ) : (
+                ''
+              )}
+              <div className="cart-item-group">
+                <LessonConfirmList lessonData={lessonData} />
+              </div>
+              {instrumentData && instrumentData.length > 0 ? (
                 <div className="cart-thead">
                   <div className="instrument-product">樂器</div>
                   <div className="instrument-price">單價</div>
@@ -237,10 +240,14 @@ export default function Test() {
                   <div className="instrument-total">總價</div>
                   <div className="instrument-payment">實付金額</div>
                 </div>
-                <div className="cart-item-group">
-                  <InstrumentConfirmList instrumentData={instrumentData} />
-                </div>
+              ) : (
+                ''
+              )}
+              <div className="cart-item-group">
+                <InstrumentConfirmList instrumentData={instrumentData} />
               </div>
+            </div>
+            {instrumentData && instrumentData.length > 0 ? (
               <div className="consumer-info">
                 <div className="cart-title">寄送資訊</div>
                 <div className="consumer-info-group">
@@ -262,7 +269,7 @@ export default function Test() {
                     </label>
                     <div className="col-sm-3 col-4">{UserInfo[0].Phone}</div>
                   </div>
-                  <div className="row g-3">
+                  <div className="row g-3 align-items-center">
                     <label
                       htmlfor="address"
                       className="col-form-label col-sm-2 col-6 h6"
@@ -281,7 +288,11 @@ export default function Test() {
                   </div>
                 </div>
               </div>
-              <div className="cart-instrument credit-card-info">
+            ) : (
+              ''
+            )}
+
+            {/* <div className="cart-instrument credit-card-info">
                 <div className="cart-title">付款資訊</div>
                 <div className="consumer-info-group">
                   <div className="row g-3 align-items-center">
@@ -294,77 +305,91 @@ export default function Test() {
                     <div className="col-sm-6">信用卡</div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </div> */}
+          </div>
+          <div
+            className="flowcart position-sticky top-0"
+            style={{ height: '100vh', paddingInline: 20, flex: '0 0 440px' }}
+          >
             <div
-              className="flowcart position-sticky top-0"
-              style={{ height: '100vh', paddingInline: 20, flex: '0 0 440px' }}
+              className="d-flex flex-column position-sticky"
+              style={{ gap: 20, top: 110 }}
             >
-              <div
-                className="d-flex flex-column position-sticky"
-                style={{ gap: 20, top: 110 }}
-              >
-                <div className="total d-flex flex-column" style={{ gap: 20 }}>
-                  <div className="d-flex justify-content-between carttext">
-                    <div>商品數量</div>
-                    <div>
-                      樂器*{calcInstrumentItems()} 課程*{calcLessonItems()}
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-between carttext">
-                    <div>原價合計</div>
-                    <div>NT ${calcTotalPrice().toLocaleString()}</div>
-                  </div>
-                  <div className="d-flex justify-content-between carttext discount">
-                    <div>折扣合計</div>
-                    <div>-NT ${calcTotalDiscount().toLocaleString()}</div>
-                  </div>
-                  <div className="d-flex justify-content-between h3">
-                    <div>合計</div>
-                    <div>NT ${(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}</div>
+              <div className="total d-flex flex-column" style={{ gap: 20 }}>
+                <div className="d-flex justify-content-between carttext">
+                  <div>商品數量</div>
+                  <div>
+                    {instrumentData && instrumentData.length > 0 ? (
+                      <>樂器*{calcInstrumentItems()}</>
+                    ) : (
+                      ''
+                    )}
+                    {lessonData && lessonData.length > 0 ? (
+                      <>課程*{calcLessonItems()}</>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 </div>
-                <div className="cart-btn">
-                  <Link
-                    href="/cart/info"
-                    className="b-btn b-btn-body d-flex w-100 h-100 justify-content-center"
-                    style={{ padding: '14px 0' }}
-                  >
-                    回上一步
-                  </Link>
-                  <div
-                    className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
-                    style={{ padding: '14px 0' }}
-                    onClick={() => {
-                      setOrderID(orderID + 1)
-                      localStorage.setItem('orderID', orderID)
-                      sendForm(
-                        username,
-                        phone,
-                        email,
-                        country,
-                        township,
-                        postcode,
-                        address,
-                        totaldiscount,
-                        payment,
-                        transportationstate,
-                        cartData,
-                        orderID,
-                        uid,
-                        LessonCUID,
-                        InstrumentCUID
-                      )
-                      confirmOrderSubmit()
-                    }}
-                  >
-                    確認付款
+                <div className="d-flex justify-content-between carttext">
+                  <div>原價合計</div>
+                  <div>NT ${calcTotalPrice().toLocaleString()}</div>
+                </div>
+                <div className="d-flex justify-content-between carttext discount">
+                  <div>折扣合計</div>
+                  <div>-NT ${calcTotalDiscount().toLocaleString()}</div>
+                </div>
+                <div className="d-flex justify-content-between h3">
+                  <div>合計</div>
+                  <div>
+                    NT $
+                    {(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}
                   </div>
+                </div>
+              </div>
+              <div className="cart-btn">
+                <Link
+                  href={
+                    instrumentData && instrumentData.length > 0
+                      ? '/cart/info'
+                      : '/cart/check'
+                  }
+                  className="b-btn b-btn-body d-flex w-100 h-100 justify-content-center"
+                  style={{ padding: '14px 0' }}
+                >
+                  回上一步
+                </Link>
+                <div
+                  className="b-btn b-btn-primary d-flex w-100 h-100 justify-content-center"
+                  style={{ padding: '14px 0' }}
+                  onClick={() => {
+                    setOrderID(orderID + 1)
+                    localStorage.setItem('orderID', orderID)
+                    sendForm(
+                      username,
+                      phone,
+                      email,
+                      country,
+                      township,
+                      postcode,
+                      address,
+                      totaldiscount,
+                      payment,
+                      transportationstate,
+                      cartData,
+                      orderID,
+                      uid,
+                      LessonCUID,
+                      InstrumentCUID
+                    )
+                  }}
+                >
+                  前往付款
                 </div>
               </div>
             </div>
           </div>
-        </>
+        </div>
       </div>
 
       {/* 手機版 */}
@@ -377,7 +402,16 @@ export default function Test() {
             <div className="d-flex justify-content-between carttext">
               <div>商品數量</div>
               <div>
-                樂器*{calcInstrumentItems()} 課程*{calcLessonItems()}
+                {instrumentData && instrumentData.length > 0 ? (
+                  <>樂器*{calcInstrumentItems()}</>
+                ) : (
+                  ''
+                )}
+                {lessonData && lessonData.length > 0 ? (
+                  <>課程*{calcLessonItems()}</>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
             <div className="d-flex justify-content-between carttext">
@@ -390,7 +424,9 @@ export default function Test() {
             </div>
             <div className="d-flex justify-content-between h3">
               <div>合計</div>
-              <div>NT ${(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}</div>
+              <div>
+                NT ${(calcTotalPrice() - calcTotalDiscount()).toLocaleString()}
+              </div>
             </div>
           </div>
           <div className="cart-btn">
@@ -427,7 +463,7 @@ export default function Test() {
                 confirmOrderSubmit()
               }}
             >
-              確認付款
+              前往付款
             </div>
           </div>
         </div>
