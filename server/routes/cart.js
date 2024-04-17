@@ -65,7 +65,7 @@ router.post('/form', upload.none(), async (req, res) => {
   postcode = postcode == 'null' ? null : postcode;
   township = township == 'null' ? null : township;
   township = township == 'null' ? null : township;
-  address = address == '' ? null : townaddressship;
+  address = address == '' ? null : address;
 
   const orderTotal =
     'INSERT INTO `order_total` (`id`, `user_id`, `payment`, `transportation_state`, `phone`, `discount`, `postcode`, `country`, `township`, `address`, `created_time`, `ouid`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)';
