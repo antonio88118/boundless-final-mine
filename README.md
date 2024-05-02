@@ -7,6 +7,8 @@
 測試帳號：
 信箱－mfee01t@gmail.com 密碼－a12345678
 
+企劃書文件：https://drive.google.com/file/d/1Gh_DK8v06_kpGvfM80yCFWU-gjYU9L4D/view?usp=sharing
+
 更新紀錄：
 - 4/10 修改購物車，新增綠界科技第三方支付。
   - 備註一：測試時，付款方式建議選擇流程最短的「網路ATM」，因為若測試成功，則任一方式都會成功。
