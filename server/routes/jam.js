@@ -784,8 +784,11 @@ router.put('/joinJam', upload.none(), async (req, res) => {
   // 若players變成空陣列，表示人已招滿，令樂團成立
   if (players.length === 0) {
     // 取得目前時間，應對資料庫中儲存的資料，使用ISO格式
-    const now = new Date().toISOString();
+    const now = new Date();
     const defaultName = 'JAM-' + juid;
+    console.log(member, playersStr, defaultName, now, juid);
+    // return
+
     jamResult = await db
       .execute(
         'UPDATE `jam` SET `member` = ? , `players` = ? , `name` = ? , `formed_time` = ? , `state` = 1 WHERE `juid` = ?',
@@ -1056,7 +1059,8 @@ router.put('/formRightNow', upload.none(), async (req, res) => {
 router.put('/editInfo', upload.single('cover_img'), async (req, res) => {
   const { juid, bandName, introduce, works_link } = req.body;
   // console.log(req.file);
-  const now = new Date().toISOString();
+  // const now = new Date().toISOString();
+  const now = new Date()
   // 有上傳圖片
   if (req.file) {
     // 檔案上傳流程

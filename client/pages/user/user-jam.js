@@ -48,7 +48,7 @@ export default function UserJam() {
   } else {
     avatarImage = `http://localhost:3005/user/avatar_userDefault.jpg`
   }
-
+ console.log(myApply);
   // ----------------------會員登入狀態  ----------------------
   // ----------------------手機版本  ----------------------
   // 主選單
