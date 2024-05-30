@@ -21,7 +21,7 @@
 基本規則：會員只能屬於一個樂團，樂團發起後必須在30天內達目標人數，詳細流程請參照下圖。
 ![image](https://github.com/antonio88118/boundless-final-mine/blob/main/%E7%B5%84%E5%9C%98%E6%B5%81%E7%A8%8B.png)
 
-## 個人功能檔案連結
+## 本人主要開發的部分
 - 前端
   - [首頁](./client/pages/index.js)
   - [樂團媒合](./client/pages/jam)
