@@ -71,7 +71,7 @@ export default function Index() {
       setCarouselUseData(carouselData)
     }
   }, [carouselData])
-  console.log(carouselUseData)
+  // console.log(carouselUseData)
   return (
     <>
       <Head>
@@ -141,6 +141,7 @@ export default function Index() {
                         href={`/lesson/${v.lesson_category_name}/${v.puid}`}
                         className={`carousel-item ${i == 0 ? 'active' : ''}`}
                         data-bs-interval="6000"
+                        key={i}
                       >
                         <Image
                           src={`/課程與師資/lesson_img/${v.img}`}
@@ -153,8 +154,9 @@ export default function Index() {
                     return (
                       <div
                         className={`carousel-item`}
-                        data-bs-interval="4000"
+                        data-bs-interval="6000"
                         style={{cursor: 'pointer'}}
+                        key={i}
                         onClick={() => {
                           if (LoginUserData.id) {
                             router.push(v.url)
@@ -168,37 +170,6 @@ export default function Index() {
                     )
                   }
                 })}
-                {/* <div className="carousel-item active" data-bs-interval="4000">
-                  <Image
-                    src="/課程與師資/lesson_img/lesson_001.jpeg"
-                    alt="..."
-                    fill
-                  />
-                </div>
-                <div className="carousel-item" data-bs-interval="4000">
-                  <Image
-                    src="/課程與師資/lesson_img/lesson_009.jpeg"
-                    alt="..."
-                    fill
-                  />
-                </div>
-                <div className="carousel-item" data-bs-interval="4000">
-                  <Image
-                    src="/課程與師資/lesson_img/lesson_008.jpeg"
-                    alt="..."
-                    fill
-                  />
-                </div>
-                <div className="carousel-item" data-bs-interval="4000">
-                  <Image
-                    src="/課程與師資/lesson_img/lesson_004.jpeg"
-                    alt="..."
-                    fill
-                  />
-                </div>
-                <div className="carousel-item" data-bs-interval="4000">
-                  <Image src="/banner.jpg" alt="..." fill />
-                </div> */}
               </div>
               <button
                 className="carousel-control-prev"
